@@ -17,18 +17,27 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.animation = "popup 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards";
     }
 
-    document.getElementById("nav-help").addEventListener("click", () => {
-        document.getElementById("help-section").scrollIntoView({ behavior: "smooth" });
-    });
+    const navHelp = document.getElementById("nav-help");
+    const helpSection = document.getElementById("help-section");
+    if (navHelp && helpSection) {
+        navHelp.addEventListener("click", () => {
+            helpSection.scrollIntoView({ behavior: "smooth" });
+        });
+    }
 
-    document.getElementById("nav-product").addEventListener("click", () => {
-        document.getElementById("product-section").scrollIntoView({ behavior: "smooth" });
-    });
+    const navProduct = document.getElementById("nav-product");
+    const productSection = document.getElementById("product-section");
+    if (navProduct && productSection) {
+        navProduct.addEventListener("click", () => {
+            productSection.scrollIntoView({ behavior: "smooth" });
+        });
+    }
 
     document.querySelectorAll("button, .divheaderchildA3, .divheaderchildA4, [class^='divparent']").forEach(el => {
-        el.addEventListener("mousedown", () => { el.style.transform = "scale(0.95)"; });
-        el.addEventListener("mouseup", () => { el.style.transform = "scale(1)"; });
-        el.addEventListener("mouseleave", () => { el.style.transform = "scale(1)"; });
+        el.addEventListener("pointerdown", () => { el.style.transform = "scale(0.95)"; });
+        el.addEventListener("pointerup", () => { el.style.transform = "scale(1)"; });
+        el.addEventListener("pointerleave", () => { el.style.transform = "scale(1)"; });
+        el.addEventListener("pointercancel", () => { el.style.transform = "scale(1)"; });
     });
 
     let basket = [];
@@ -36,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const basketBtn = document.createElement("div");
     basketBtn.className = "rattan-basket-btn";
     basketBtn.innerHTML = `<h1>Basket (0)</h1>`;
-    header.appendChild(basketBtn);
+    if (header) header.appendChild(basketBtn);
 
     const basketModal = document.createElement("div");
     basketModal.className = "rattan-modal-overlay";
@@ -75,20 +84,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function openModal(modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        triggerPopup(modal.querySelector(".rattan-modal-box"));
+        setTimeout(() => { modal.style.opacity = "1"; }, 10);
+    }
+
+    function closeModal(modal) {
+        modal.style.opacity = "0";
+        document.body.style.overflow = "";
+        setTimeout(() => { modal.style.display = "none"; }, 300);
+    }
+
     basketBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         updateBasketUI();
-        basketModal.style.display = "flex";
-        triggerPopup(basketModal.querySelector(".rattan-modal-box"));
-        setTimeout(() => basketModal.style.opacity = "1", 10);
+        openModal(basketModal);
     });
 
-    function closeBasketModal() {
-        basketModal.style.opacity = "0";
-        setTimeout(() => basketModal.style.display = "none", 300);
-    }
-
-    document.getElementById("rattan-close-basket").addEventListener("click", closeBasketModal);
+    document.getElementById("rattan-close-basket").addEventListener("click", () => closeModal(basketModal));
     document.getElementById("rattan-clear-basket").addEventListener("click", () => {
         basket = [];
         updateBasketUI();
@@ -152,9 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .map((time, i) => `<p><strong>${processLabels[i] || "Process"}:</strong> ${time}</p>`)
                 .join("");
 
-            detailModal.style.display = "flex";
-            triggerPopup(detailModal.querySelector(".rattan-modal-box"));
-            setTimeout(() => detailModal.style.opacity = "1", 10);
+            openModal(detailModal);
         });
     });
 
@@ -162,22 +175,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentSelectedProduct) {
             basket.push(currentSelectedProduct);
             updateBasketUI();
-            closeDetailModal();
+            closeModal(detailModal);
         }
     });
 
-    function closeDetailModal() {
-        detailModal.style.opacity = "0";
-        setTimeout(() => detailModal.style.display = "none", 300);
-    }
-
-    document.getElementById("detail-close-btn").addEventListener("click", closeDetailModal);
+    document.getElementById("detail-close-btn").addEventListener("click", () => closeModal(detailModal));
 
     [basketModal, detailModal].forEach(modal => {
         modal.addEventListener("click", (e) => {
             if (e.target === modal) {
-                modal.style.opacity = "0";
-                setTimeout(() => modal.style.display = "none", 300);
+                closeModal(modal);
             }
         });
     });
@@ -203,53 +210,83 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         });
-        indicator.textContent = `Showing ${groupLabels[currentRowIndex]} (Click container background to switch)`;
+        indicator.textContent = `Showing ${groupLabels[currentRowIndex]} (Tap here or swipe to switch)`;
         indicator.style.display = "inline-block";
+    }
+
+    function switchRow(step = 1) {
+        if (isSearching) {
+            if (searchInput) searchInput.value = "";
+            isSearching = false;
+            cards.forEach(card => { card.style.display = "flex"; });
+            applyRowDisplay();
+        } else {
+            currentRowIndex = (currentRowIndex + step + rows.length) % rows.length;
+            applyRowDisplay();
+        }
     }
 
     applyRowDisplay();
 
-    searchInput.addEventListener("input", (e) => {
-        const query = e.target.value.toLowerCase().trim();
-
-        if (query.length > 0) {
-            isSearching = true;
-            indicator.style.display = "none";
-
-            rows.forEach(row => { if (row) row.style.display = "flex"; });
-
-            cards.forEach(card => {
-                const letter = card.className.replace("divparent", "").replace("1", "");
-                const titleEl = card.querySelector(`.divchild${letter}1 h1`) || card.querySelector(`.divchild${letter}1 H1`);
-                const name = titleEl ? titleEl.textContent.toLowerCase() : "";
-
-                if (name.includes(query)) {
-                    if (card.style.display !== "flex") {
-                        card.style.display = "flex";
-                        triggerPopup(card);
-                    }
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        } else {
-            isSearching = false;
-            cards.forEach(card => { card.style.display = "flex"; });
-            applyRowDisplay();
-        }
+    indicator.addEventListener("click", (e) => {
+        e.stopPropagation();
+        switchRow(1);
     });
 
-    mainContainer.addEventListener("click", (e) => {
-        if (e.target === mainContainer || e.target === masterGrid || e.target === poster) {
-            if (isSearching) {
-                searchInput.value = "";
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (query.length > 0) {
+                isSearching = true;
+                indicator.style.display = "none";
+
+                rows.forEach(row => { if (row) row.style.display = "flex"; });
+
+                cards.forEach(card => {
+                    const letter = card.className.replace("divparent", "").replace("1", "");
+                    const titleEl = card.querySelector(`.divchild${letter}1 h1`) || card.querySelector(`.divchild${letter}1 H1`);
+                    const name = titleEl ? titleEl.textContent.toLowerCase() : "";
+
+                    if (name.includes(query)) {
+                        if (card.style.display !== "flex") {
+                            card.style.display = "flex";
+                            triggerPopup(card);
+                        }
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            } else {
                 isSearching = false;
                 cards.forEach(card => { card.style.display = "flex"; });
                 applyRowDisplay();
-            } else {
-                currentRowIndex = (currentRowIndex + 1) % rows.length;
-                applyRowDisplay();
             }
-        }
-    });
+        });
+    }
+
+    if (mainContainer) {
+        mainContainer.addEventListener("click", (e) => {
+            if (e.target === mainContainer || e.target === masterGrid || e.target === poster) {
+                switchRow(1);
+            }
+        });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        mainContainer.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        mainContainer.addEventListener("touchend", (e) => {
+            const deltaX = e.changedTouches[0].screenX - touchStartX;
+            const deltaY = e.changedTouches[0].screenY - touchStartY;
+
+            if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                switchRow(deltaX < 0 ? 1 : -1);
+            }
+        }, { passive: true });
+    }
 });
