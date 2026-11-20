@@ -1,0 +1,396 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #120b07;
+    color: #f5f0eb;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+@keyframes showup {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes popup {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.03);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes colorswitchvertical {
+    0% { background-position: 50% 0%; }
+    40%, 60% { background-position: 50% 10%; }
+    100% { background-position: 50% 0%; }
+}
+
+.divheaderparentA1 {
+    display: flex;
+    color: white;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    background: linear-gradient(270deg, rgba(105, 64, 11, 1), rgba(26, 17, 10, 1), rgba(140, 90, 30, 1), rgba(40, 20, 5, 1));
+    background-size: 400% 400%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.divheaderparentA1 img {
+    height: 40px;
+    width: auto;
+}
+
+.divheaderchildA2 {
+    display: flex;
+    align-items: center;
+}
+
+#rattan-search-input {
+    background-color: #24170E;
+    color: #D8A45C;
+    padding: 8px 14px;
+    border: 2px solid #D8A45C;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    width: 180px;
+    transition: all 0.2s ease;
+}
+
+#rattan-search-input::placeholder {
+    color: #D8A45C;
+    opacity: 0.7;
+}
+
+#rattan-search-input:focus {
+    width: 240px;
+    background-color: #3b2716;
+}
+
+.divheaderchildA3, .divheaderchildA4 {
+    background-color: #24170E;
+    color: #D8A45C;
+    padding: 8px 16px;
+    text-align: center;
+    border: 2px solid #D8A45C;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.divheaderchildA3 h1, .divheaderchildA4 h1 {
+    font-size: 1.1rem;
+}
+
+.divheaderchildA3:hover, .divheaderchildA4:hover {
+    color: #24170E;
+    background-color: #D8A45C;
+    transform: scale(1.05);
+}
+
+.divlowerheaderparentA1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(26, 17, 10, 1) 0%, rgba(26, 17, 10, 1) 25%, rgb(248, 248, 247) 50%, rgba(26, 17, 10, 1) 75%, rgba(26, 17, 10, 1) 100%);
+    background-size: 100% 300%;
+    animation: colorswitchvertical 6s ease-in-out infinite;
+    color: #f5f0eb;
+    padding: 40px 20px;
+    width: 85%;
+    max-width: 900px;
+    margin: 40px auto;
+    border: 3px solid white;
+    border-radius: 20px;
+    box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.15);
+}
+
+.divlowerheaderchildA1 h1 {
+    -webkit-text-stroke: 1px white;
+    color: black;
+    font-size: 2.2rem;
+}
+
+.divlowerheaderchildA2 p {
+    max-width: 700px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: white;
+    font-weight: bold;
+}
+
+.divfooterparentA1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: black;
+    color: white;
+    height: 80px;
+    margin-top: 60px;
+    border-top: 2px solid #3b2716;
+}
+
+.divcontainerABCDEFGHI {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(45deg, black, #804000, rgb(0, 0, 0));
+    gap: 30px;
+    padding: 40px 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 3px solid white;
+    border-radius: 20px;
+    box-shadow: 0px 0px 25px rgba(216, 164, 92, 0.2);
+}
+
+.div-master-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+
+.divlowercontainerABC, .divlowercontainerDEF, .divlowercontainerGHI {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 25px;
+    width: 100%;
+}
+
+[class^="divparent"] {
+    background: rgba(26, 17, 10, 0.9);
+    border: 2px solid #D8A45C;
+    border-radius: 12px;
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: popup 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[class^="divparent"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(216, 164, 92, 0.4);
+}
+
+[class^="divpic"] {
+    width: 100%;
+    height: 180px;
+    background-color: #3b2716;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+[class^="divpic"] img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+[class^="divchild"] h1 {
+    font-size: 1.4rem;
+    color: #D8A45C;
+}
+
+[class^="divchild"] p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.divchildA3 p {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 1.1rem;
+}
+
+[class^="divsemichild"] {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 6px;
+    color: #D8A45C;
+}
+
+.divposter h1 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 1px #D8A45C;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.rattan-basket-btn {
+    background-color: #24170E;
+    color: #D8A45C;
+    padding: 8px 16px;
+    text-align: center;
+    border: 2px solid #D8A45C;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rattan-basket-btn h1 {
+    font-size: 1.1rem;
+}
+
+.rattan-basket-btn:hover {
+    color: #24170E;
+    background-color: #D8A45C;
+    transform: scale(1.05);
+}
+
+.array-indicator {
+    color: #f5f0eb;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    background: rgba(26, 17, 10, 0.75);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #D8A45C;
+    display: inline-block;
+}
+
+.rattan-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 20000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.rattan-modal-box {
+    background: #24170E;
+    color: #f5f0eb;
+    border: 3px solid #D8A45C;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    animation: popup 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.rattan-modal-box h2 {
+    color: #D8A45C;
+    font-size: 1.8rem;
+}
+
+.detail-highlight {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.detail-process-box {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(216, 164, 92, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+#rattan-basket-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+#rattan-basket-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #D8A45C;
+}
+
+.rattan-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.rattan-modal-box button {
+    background-color: #D8A45C;
+    color: #24170E;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.rattan-modal-box button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.remove-item-btn {
+    background-color: #8b2626 !important;
+    color: #ffffff !important;
+    padding: 5px 10px !important;
+    font-size: 0.8rem;
+}
